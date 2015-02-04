@@ -1,0 +1,61 @@
+body {
+    font: 14px "Play",sans-serif;
+    background: #000;
+}
+.row {
+    display: block !important;
+    margin-bottom: 5px;
+}
+.input-wrapper {
+    display: inline-block;
+}
+.button-wrapper {
+    display: inline-block;
+    padding: 0;
+}
+.button-wrapper > button {
+    font-family: inherit;
+    line-height: 2em;
+    border: 1px solid #36677f;
+    background: #42a0dc;
+    color: #fff;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    padding: 3px 6px;
+}
+.button-wrapper > button:active {
+    -webkit-box-shadow: 0 0 5px;
+    -moz-box-shadow: 0 0 5px;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,0.5);
+}
+.button-wrapper.block > button {
+    width: 100%;
+    text-overflow: ellipsis;
+}
+.controls-box {
+    position: fixed;
+    padding: 10px;
+    margin: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #eee;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.controls-box.top {
+    top: 0;
+}
+.controls-box.left {
+    left: 0;
+}
+.controls-box.right {
+    right: 0;
+}
+.img-editor-box {
+    margin: 10px auto;
+}
+.img-editor-box > img {
+    display: block;
+    margin: 0 auto;
+}

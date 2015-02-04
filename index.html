@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+	<meta http-equiv="Content-Type" content="text/html">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Image Crop by Angular.js</title>
+	<link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
+	<link href='css/style.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<div class="img-editor-box">
+	<img src="http://lorempixel.com/640/480/nature" alt="Random Pic" width="640" height="480"/>
+	<!--TODO: ng directive-->
+	<autocrop></autocrop>
+</div>
+<div class="controls-box top left">
+	<div class="row">
+		<div class="row">
+			<label for="img_src">Image URL</label>
+		</div>
+		<div class="input-wrapper block row">
+			<input type="text" id="img_src" value="http://lorempixel.com/nature"/>
+		</div>
+		<div class="button-wrapper row block">
+			<button id="load">Load</button>
+		</div>
+	</div>
+</div>
+<div class="controls-box top right">
+	<div class="row">
+		<label for="coord_x0">X0</label>
+		<div class="input-wrapper">
+			<input type="number" id="coord_x0" value="0" step="1"/>
+		</div>
+	</div>
+	<div class="row">
+		<label for="coord_y0">Y0</label>
+		<div class="input-wrapper">
+			<input type="number" id="coord_y0" value="0" step="1"/>
+		</div>
+	</div>
+	<div class="row">
+		<label for="coord_x1">X1</label>
+		<div class="input-wrapper">
+			<input type="number" id="coord_x1" value="0" step="1"/>
+		</div>
+	</div>
+	<div class="row">
+		<label for="coord_y1">Y1</label>
+		<div class="input-wrapper">
+			<input type="number" id="coord_y1" value="0" step="1"/>
+		</div>
+	</div>
+</div>
+</body>
+</html>
