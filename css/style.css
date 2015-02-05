@@ -1,3 +1,9 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 body {
     font: 14px "Play",sans-serif;
     background: #000;
@@ -53,9 +59,69 @@ body {
     right: 0;
 }
 .img-editor-box {
-    margin: 10px auto;
+    position: relative;
+    height: 100%;
+    width: 100%;
 }
 .img-editor-box > img {
     display: block;
-    margin: 0 auto;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.bounding-box {
+    position: absolute;
+    top: 160px;
+    bottom: 214px;
+    left: 240px;
+    right: 280px;
+    border: 1px dashed yellow;
+    background: rgba(255, 255, 255, 0.3);
+}
+.bb-point {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    background: #ae4;
+    border: 2px solid #115500;
+    margin: -7px 0 0 -7px;
+}
+.bb-point:active {
+    background: #00eeff;
+}
+.bb-point[data-offset="0,-1"],
+.bb-point[data-offset="-1,-1"],
+.bb-point[data-offset="1,-1"] {
+    top: 0
+}
+.bb-point[data-offset="0,0"],
+.bb-point[data-offset="-1,0"],
+.bb-point[data-offset="1,0"] {
+    top: 50%
+}
+.bb-point[data-offset="0,1"],
+.bb-point[data-offset="-1,1"],
+.bb-point[data-offset="1,1"] {
+    top: 100%
+}
+.bb-point[data-offset="-1,0"],
+.bb-point[data-offset="-1,-1"],
+.bb-point[data-offset="-1,1"] {
+    left: 0;
+}
+.bb-point[data-offset="0,0"],
+.bb-point[data-offset="0,-1"],
+.bb-point[data-offset="0,1"] {
+    left: 50%;
+}
+.bb-point[data-offset="1,0"],
+.bb-point[data-offset="1,-1"],
+.bb-point[data-offset="1,1"] {
+    left: 100%;
 }

@@ -1,18 +1,34 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="ImgCropApp">
 <head>
 	<meta http-equiv="Content-Type" content="text/html">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Image Crop by Angular.js</title>
+
+	<title>Image Crop on Angular.js</title>
+
 	<link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
 	<link href='css/style.css' rel='stylesheet' type='text/css'>
+
+	<script src="lib/angular.js"></script>
+	<script src="js/crop.js"></script>
 </head>
-<body>
+<body ng-controller="AppCtrl">
 <div class="img-editor-box">
-	<img src="http://lorempixel.com/640/480/nature" alt="Random Pic" width="640" height="480"/>
+	<img ng-src="{{ getImgSrc() }} " alt="Random Pic" width="{{ imgWidth }}" height="{{ imgHeight }}"/>
 	<!--TODO: ng directive-->
-	<autocrop></autocrop>
+	<!--<autocrop></autocrop>-->
+	<div ng-class="boundingBox">
+		<div data-offset="-1,-1" class="bb-point"></div>
+		<div data-offset="0,-1" class="bb-point"></div>
+		<div data-offset="1,-1" class="bb-point"></div>
+		<div data-offset="-1,0" class="bb-point"></div>
+		<div data-offset="0,0" class="bb-point"></div>
+		<div data-offset="1,0" class="bb-point"></div>
+		<div data-offset="-1,1" class="bb-point"></div>
+		<div data-offset="0,1" class="bb-point"></div>
+		<div data-offset="1,1" class="bb-point"></div>
+	</div>
 </div>
 <div class="controls-box top left">
 	<div class="row">
@@ -31,25 +47,25 @@
 	<div class="row">
 		<label for="coord_x0">X0</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_x0" value="0" step="1"/>
+			<input type="number" id="coord_x0" ng-model="coords.x0" step="1" min="0">
 		</div>
 	</div>
 	<div class="row">
 		<label for="coord_y0">Y0</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_y0" value="0" step="1"/>
+			<input type="number" id="coord_y0" ng-model="coords.y0" step="1" min="0">
 		</div>
 	</div>
 	<div class="row">
 		<label for="coord_x1">X1</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_x1" value="0" step="1"/>
+			<input type="number" id="coord_x1" ng-model="coords.x1" step="1" min="0">
 		</div>
 	</div>
 	<div class="row">
 		<label for="coord_y1">Y1</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_y1" value="0" step="1"/>
+			<input type="number" id="coord_y1" ng-model="coords.y1" step="1"  min="0">
 		</div>
 	</div>
 </div>
