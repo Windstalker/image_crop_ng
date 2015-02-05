@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="ImgCropApp">
+<html ng-app="imgCropApp">
 <head>
 	<meta http-equiv="Content-Type" content="text/html">
 	<meta charset="utf-8">
@@ -13,12 +13,12 @@
 	<script src="lib/angular.js"></script>
 	<script src="js/crop.js"></script>
 </head>
-<body ng-controller="AppCtrl">
-<div class="img-editor-box">
-	<img ng-src="{{ getImgSrc() }} " alt="Random Pic" width="{{ imgWidth }}" height="{{ imgHeight }}"/>
+<body>
+<div class="img-editor-box" ng-controller="ImgEditorCtrl">
+	<img ng-src="{{ getImgSrc() }} " alt="Random Pic" width="{{ imgData.width }}" height="{{ imgData.height }}"/>
 	<!--TODO: ng directive-->
 	<!--<autocrop></autocrop>-->
-	<div ng-class="boundingBox">
+	<div class="bounding-box">
 		<div data-offset="-1,-1" class="bb-point"></div>
 		<div data-offset="0,-1" class="bb-point"></div>
 		<div data-offset="1,-1" class="bb-point"></div>
@@ -30,7 +30,7 @@
 		<div data-offset="1,1" class="bb-point"></div>
 	</div>
 </div>
-<div class="controls-box top left">
+<div class="controls-box top left" ng-controller="ImgLoaderCtrl">
 	<div class="row">
 		<div class="row">
 			<label for="img_src">Image URL</label>
@@ -43,29 +43,29 @@
 		</div>
 	</div>
 </div>
-<div class="controls-box top right">
+<div class="controls-box top right" ng-controller="BoundBoxCtrl">
 	<div class="row">
 		<label for="coord_x0">X0</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_x0" ng-model="coords.x0" step="1" min="0">
+			<input type="number" id="coord_x0" ng-model="bbox.x0" step="1" min="0">
 		</div>
 	</div>
 	<div class="row">
 		<label for="coord_y0">Y0</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_y0" ng-model="coords.y0" step="1" min="0">
+			<input type="number" id="coord_y0" ng-model="bbox.y0" step="1" min="0">
 		</div>
 	</div>
 	<div class="row">
 		<label for="coord_x1">X1</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_x1" ng-model="coords.x1" step="1" min="0">
+			<input type="number" id="coord_x1" ng-model="bbox.x1" step="1" min="0">
 		</div>
 	</div>
 	<div class="row">
 		<label for="coord_y1">Y1</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_y1" ng-model="coords.y1" step="1"  min="0">
+			<input type="number" id="coord_y1" ng-model="bbox.y1" step="1"  min="0">
 		</div>
 	</div>
 </div>
