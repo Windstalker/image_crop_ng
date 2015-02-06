@@ -81,7 +81,7 @@ body {
     border: 1px dashed yellow;
     background: rgba(255, 255, 255, 0.3);
 }
-.bb-point {
+[bb-point] {
     position: absolute;
     width: 10px;
     height: 10px;
@@ -92,36 +92,36 @@ body {
     border: 2px solid #115500;
     margin: -7px 0 0 -7px;
 }
-.bb-point:active {
+[bb-point]:active {
     background: #00eeff;
 }
-.bb-point[data-offset="0,-1"],
-.bb-point[data-offset="-1,-1"],
-.bb-point[data-offset="1,-1"] {
+[bb-point][data-offset="0,-1"],
+[bb-point][data-offset="-1,-1"],
+[bb-point][data-offset="1,-1"] {
     top: 0
 }
-.bb-point[data-offset="0,0"],
-.bb-point[data-offset="-1,0"],
-.bb-point[data-offset="1,0"] {
+[bb-point][data-offset="0,0"],
+[bb-point][data-offset="-1,0"],
+[bb-point][data-offset="1,0"] {
     top: 50%
 }
-.bb-point[data-offset="0,1"],
-.bb-point[data-offset="-1,1"],
-.bb-point[data-offset="1,1"] {
+[bb-point][data-offset="0,1"],
+[bb-point][data-offset="-1,1"],
+[bb-point][data-offset="1,1"] {
     top: 100%
 }
-.bb-point[data-offset="-1,0"],
-.bb-point[data-offset="-1,-1"],
-.bb-point[data-offset="-1,1"] {
+[bb-point][data-offset="-1,0"],
+[bb-point][data-offset="-1,-1"],
+[bb-point][data-offset="-1,1"] {
     left: 0;
 }
-.bb-point[data-offset="0,0"],
-.bb-point[data-offset="0,-1"],
-.bb-point[data-offset="0,1"] {
+[bb-point][data-offset="0,0"],
+[bb-point][data-offset="0,-1"],
+[bb-point][data-offset="0,1"] {
     left: 50%;
 }
-.bb-point[data-offset="1,0"],
-.bb-point[data-offset="1,-1"],
-.bb-point[data-offset="1,1"] {
+[bb-point][data-offset="1,0"],
+[bb-point][data-offset="1,-1"],
+[bb-point][data-offset="1,1"] {
     left: 100%;
 }

@@ -15,20 +15,8 @@
 </head>
 <body>
 <div class="img-editor-box" ng-controller="ImgEditorCtrl">
-	<img ng-src="{{ getImgSrc() }} " alt="Random Pic" width="{{ imgData.width }}" height="{{ imgData.height }}"/>
-	<!--TODO: ng directive-->
-	<!--<autocrop></autocrop>-->
-	<div class="bounding-box">
-		<div data-offset="-1,-1" class="bb-point"></div>
-		<div data-offset="0,-1" class="bb-point"></div>
-		<div data-offset="1,-1" class="bb-point"></div>
-		<div data-offset="-1,0" class="bb-point"></div>
-		<div data-offset="0,0" class="bb-point"></div>
-		<div data-offset="1,0" class="bb-point"></div>
-		<div data-offset="-1,1" class="bb-point"></div>
-		<div data-offset="0,1" class="bb-point"></div>
-		<div data-offset="1,1" class="bb-point"></div>
-	</div>
+	<img ng-src="{{ getImgSrc(imgData) }} " alt="Random Pic" width="{{ imgData.width }}" height="{{ imgData.height }}"/>
+	<autocrop></autocrop>
 </div>
 <div class="controls-box top left" ng-controller="ImgLoaderCtrl">
 	<div class="row">

@@ -17,25 +17,52 @@
 		};
 	});
 
-	var imgEditor = app.controller('ImgEditorCtrl', function ($scope, ImgData, BoundBoxData) {
+	app.directive('autocrop', function () {
+		return {
+			restrict: 'E',
+			templateUrl: 'templates/autocrop.html',
+			controller: function ($scope) {
+				$scope.prop = 'property'
+				$scope.meth = function () {
+					console.log(this.prop);
+				}
+			}
+		};
+	});
+
+	app.directive('bb-point', function () {
+		return {
+			restrict: 'A',
+			require: 'autocrop',
+			link: function (scope, element, attrs, autocropCtrl) {
+				element.bind('click', function () {
+					autocropCtrl.meth();
+				});
+			}
+		}
+	});
+
+	app.controller('ImgEditorCtrl', function ($scope, ImgData, BoundBoxData) {
 		$scope.imgData = ImgData;
 		$scope.bbox = BoundBoxData;
 
-		$scope.getImgSrc = function () {
+		$scope.getImgSrc = function (imgData) {
 			var parts = [
-				this.imgData.src,
-				this.imgData.width,
-				this.imgData.height,
-				this.imgData.theme
+				imgData.src,
+				imgData.width,
+				imgData.height,
+				imgData.theme
 			];
 
 			return parts.join('/')
 		}
 	});
-	var imgLoader = app.controller('ImgLoaderCtrl', function ($scope, ImgData) {
+
+	app.controller('ImgLoaderCtrl', function ($scope, ImgData) {
 		$scope.model = ImgData;
 	});
-	var boundBoxCoords = app.controller('BoundBoxCtrl', function ($scope, BoundBoxData) {
+
+	app.controller('BoundBoxCtrl', function ($scope, BoundBoxData) {
 		$scope.bbox = BoundBoxData;
 	});
 })(window, document);
