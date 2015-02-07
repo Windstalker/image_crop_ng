@@ -20,9 +20,11 @@
 	app.directive('autocrop', function () {
 		return {
 			restrict: 'E',
+			replace: true,
+			scope: true,
 			templateUrl: 'templates/autocrop.html',
 			controller: function ($scope) {
-				$scope.prop = 'property'
+				$scope.prop = 'property';
 				$scope.meth = function () {
 					console.log(this.prop);
 				}
@@ -30,13 +32,15 @@
 		};
 	});
 
-	app.directive('bb-point', function () {
+	app.directive('bbPoint', function () {
 		return {
 			restrict: 'A',
-			require: 'autocrop',
+			require: '^autocrop',
+			scope: true,
 			link: function (scope, element, attrs, autocropCtrl) {
 				element.bind('click', function () {
-					autocropCtrl.meth();
+					console.log('onclick');
+					scope.meth();
 				});
 			}
 		}
