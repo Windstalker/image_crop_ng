@@ -75,9 +75,9 @@ body {
 .bounding-box {
     position: absolute;
     top: 160px;
-    bottom: 214px;
-    left: 240px;
-    right: 280px;
+    left: 214px;
+    width: 240px;
+    height: 280px;
     border: 1px dashed yellow;
     background: rgba(255, 255, 255, 0.3);
 }
