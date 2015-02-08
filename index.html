@@ -10,6 +10,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
 	<link href='css/style.css' rel='stylesheet' type='text/css'>
 
+	<script src="lib/jquery.min.js"></script>
 	<script src="lib/angular.js"></script>
 	<script src="js/crop.js"></script>
 </head>
@@ -33,27 +34,27 @@
 </div>
 <div class="controls-box top right" ng-controller="BoundBoxCtrl">
 	<div class="row">
-		<label for="coord_x0">X0</label>
+		<label for="x">X0</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_x0" ng-model="bbox.x0" step="1" min="0">
+			<input type="number" id="x" ng-model="bbox.x" step="1" min="0">
 		</div>
 	</div>
 	<div class="row">
-		<label for="coord_y0">Y0</label>
+		<label for="y">Y0</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_y0" ng-model="bbox.y0" step="1" min="0">
+			<input type="number" id="y" ng-model="bbox.y" step="1" min="0">
 		</div>
 	</div>
 	<div class="row">
-		<label for="coord_x1">X1</label>
+		<label for="width">W</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_x1" ng-model="bbox.x1" step="1" min="0">
+			<input type="number" id="width" ng-model="bbox.width" step="1" min="1">
 		</div>
 	</div>
 	<div class="row">
-		<label for="coord_y1">Y1</label>
+		<label for="height">H</label>
 		<div class="input-wrapper">
-			<input type="number" id="coord_y1" ng-model="bbox.y1" step="1"  min="0">
+			<input type="number" id="height" ng-model="bbox.height" step="1"  min="1">
 		</div>
 	</div>
 </div>
