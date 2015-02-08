@@ -19,8 +19,8 @@
 
 	app.factory('BoundBoxData', function () {
 		return {
-			x: 0, y: 0,
-			width: 0, height: 0
+			x: 150, y: 150,
+			width: 320, height: 240
 		};
 	});
 
@@ -65,11 +65,12 @@
 				$scope.onBBPointMove = function (e) {
 					if (!!$scope.activePoint) {
 						console.log('drag move');
-						$scope.bbox.x += e.screenX - $scope.lastCoord.x;
-						$scope.bbox.y += e.screenY - $scope.lastCoord.y;
-						$scope.lastCoord.x = e.screenX;
-						$scope.lastCoord.y = e.screenY;
-						console.log($scope.bbox);
+						$scope.$apply(function () {
+							$scope.bbox.x += e.screenX - $scope.lastCoord.x;
+							$scope.bbox.y += e.screenY - $scope.lastCoord.y;
+							$scope.lastCoord.x = e.screenX;
+							$scope.lastCoord.y = e.screenY;
+						});
 					}
 				};
 				$scope.onBBPointDragEnd = function (e) {
