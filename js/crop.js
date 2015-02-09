@@ -39,7 +39,6 @@
 				$scope.bbox = BoundBoxData;
 
 				$scope.onBBPointDragStart = function (el, event) {
-					console.log('drag start');
 					var x = event.screenX,
 						y = event.screenY;
 					$scope.activePoint = el;
@@ -63,11 +62,40 @@
 					});
 				};
 				$scope.onBBPointMove = function (e) {
+					var offset = $scope.activePointOffset;
 					if (!!$scope.activePoint) {
-						console.log('drag move');
 						$scope.$apply(function () {
-							$scope.bbox.x += e.screenX - $scope.lastCoord.x;
-							$scope.bbox.y += e.screenY - $scope.lastCoord.y;
+							var deltaX = e.screenX - $scope.lastCoord.x,
+								deltaY = e.screenY - $scope.lastCoord.y,
+								maxX = $scope.startCoord.x + $scope.startCoord.w,
+								maxY = $scope.startCoord.y + $scope.startCoord.h,
+								x = $scope.bbox.x,
+								y = $scope.bbox.y,
+								w = $scope.bbox.width,
+								h = $scope.bbox.height;
+							if (offset[0] === 0 && offset[1] === 0) {
+								$scope.bbox.x = x + deltaX;
+								$scope.bbox.y = y + deltaY;
+							} else {
+								if (offset[0] === -1) {
+									x += deltaX;
+									w -= deltaX;
+								}
+								if (offset[1] === -1) {
+									y += deltaY;
+									h -= deltaY;
+								}
+								if (offset[0] === 1) {
+									w += deltaX;
+								}
+								if (offset[1] === 1) {
+									h += deltaY;
+								}
+								if (x <= maxX) $scope.bbox.x = x;
+								if (y <= maxY) $scope.bbox.y = y;
+								$scope.bbox.width = w;
+								$scope.bbox.height = h;
+							}
 							$scope.lastCoord.x = e.screenX;
 							$scope.lastCoord.y = e.screenY;
 						});
@@ -77,7 +105,10 @@
 					if (!!$scope.activePoint) {
 						$scope.activePoint = null;
 						$scope.activePointOffset = null;
-						console.log('drag end');
+						$scope.$apply(function () {
+							$scope.bbox.width = $scope.bbox.width >= 0 ? $scope.bbox.width : 0;
+							$scope.bbox.height = $scope.bbox.height >= 0 ? $scope.bbox.height : 0;
+						});
 					}
 					$document.unbind('mousemove.bbpoint');
 					$document.unbind('mouseup.bbpoint');
