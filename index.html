@@ -16,8 +16,7 @@
 </head>
 <body>
 <div class="img-editor-box" ng-controller="ImgEditorCtrl">
-	<img ng-src="{{ imgData.src }} " alt="Random Pic" width="{{ imgData.width }}" height="{{ imgData.height }}"/>
-	<canvas id="editor_canvas">Canvas is not supported on your device</canvas>
+	<canvas id="editor_canvas" width="{{ imgData.width }}" height="{{ imgData.height }}" data-img-canvas>Canvas is not supported on your device</canvas>
 	<autocrop></autocrop>
 </div>
 <div class="controls-box top left" ng-controller="ImgLoaderCtrl">

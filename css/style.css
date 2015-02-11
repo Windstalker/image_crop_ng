@@ -70,7 +70,8 @@ body {
     height: 100%;
     width: 100%;
 }
-.img-editor-box > img {
+.img-editor-box > img,
+.img-editor-box > canvas {
     display: block;
     margin: auto;
     position: absolute;

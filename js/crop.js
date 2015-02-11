@@ -112,7 +112,6 @@
 		return {
 			restrict: 'A',
 			require: '^autocrop',
-			scope: true,
 			link: function (scope, element) {
 				element.bind('mousedown', function (e) {
 					scope.onBBPointDragStart(this, e);
@@ -121,17 +120,43 @@
 		}
 	});
 
+	app.directive('imgCanvas', function ($document) {
+		return {
+			restrict: 'A',
+			controller: function ($scope, $element) {
+				console.log($element);
+				var cnv = $element.get(0);
+				$scope.ctx = cnv.getContext('2d');
+				$scope.imgEl = new Image();
+
+				$scope.imgEl.onload = function () {
+					$scope.drawImg(this);
+				};
+				$scope.drawImg = function (img) {
+					console.log(img);
+					this.ctx.drawImage(img, 0, 0, cnv.width, cnv.height);
+				};
+				$scope.drawCropArea = function (img) {
+					console.log(img);
+					this.ctx.fillRect(img, 0, 0, cnv.width, cnv.height);
+				};
+			},
+			link: function (scope, element) {
+				scope.$watchCollection('imgData', function (newData) {
+					console.log('img changes!');
+					$.extend(scope.imgEl, newData);
+				});
+				scope.$watchCollection('bbox', function (newData) {
+					console.log('bbox changes!');
+					// TODO: canvas updating on bbox change
+				});
+			}
+		}
+	});
+
 	app.controller('ImgEditorCtrl', function ($scope, ImgData, BoundBoxData) {
 		$scope.imgData = ImgData;
 		$scope.bbox = BoundBoxData;
-		$scope.imgEl = new Image();
-
-		$scope.$watchCollection('imgData',
-			function () {
-				console.log('img changes!');
-				// TODO: canvas updating on img change
-			}
-		);
 	});
 
 	app.controller('ImgLoaderCtrl', function ($scope, ImgData) {
