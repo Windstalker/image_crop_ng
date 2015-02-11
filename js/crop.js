@@ -31,7 +31,7 @@
 			scope: true,
 			templateUrl: 'templates/autocrop.html',
 			controller: function ($scope, $document, BoundBoxData) {
-				console.log($document);
+				var maxX, maxY;
 				$scope.activePoint = null;
 				$scope.activePointOffset = null;
 				$scope.startCoord = {x: 0, y: 0};
@@ -39,8 +39,8 @@
 				$scope.bbox = BoundBoxData;
 
 				$scope.onBBPointDragStart = function (el, event) {
-					var x = event.screenX,
-						y = event.screenY;
+					var x = event.pageX,
+						y = event.pageY;
 					$scope.activePoint = el;
 					$scope.activePointOffset = el
 						.getAttribute('data-offset')
@@ -48,11 +48,9 @@
 						.map(function (item) {
 							return parseInt(item);
 						});
-					$scope.startCoord.x = x;
-					$scope.startCoord.y = y;
 
-					$scope.lastCoord.x = x;
-					$scope.lastCoord.y = y;
+					maxX = x + $scope.bbox.width;
+					maxY = y + $scope.bbox.height;
 
 					$document.bind('mousemove.bbpoint', function (e) {
 						$scope.onBBPointMove(e);
@@ -65,39 +63,33 @@
 					var offset = $scope.activePointOffset;
 					if (!!$scope.activePoint) {
 						$scope.$apply(function () {
-							var deltaX = e.screenX - $scope.lastCoord.x,
-								deltaY = e.screenY - $scope.lastCoord.y,
-								maxX = $scope.startCoord.x + $scope.startCoord.w,
-								maxY = $scope.startCoord.y + $scope.startCoord.h,
-								x = $scope.bbox.x,
+							var x = $scope.bbox.x,
 								y = $scope.bbox.y,
 								w = $scope.bbox.width,
 								h = $scope.bbox.height;
 							if (offset[0] === 0 && offset[1] === 0) {
-								$scope.bbox.x = x + deltaX;
-								$scope.bbox.y = y + deltaY;
+								x = e.pageX - w/2;
+								y = e.pageY - h/2;
 							} else {
 								if (offset[0] === -1) {
-									x += deltaX;
-									w -= deltaX;
+									x = e.pageX < maxX ? e.pageX : maxX;
+									w = maxX - e.pageX;
 								}
 								if (offset[1] === -1) {
-									y += deltaY;
-									h -= deltaY;
+									y = e.pageY < maxY ? e.pageY : maxY;
+									h = maxY - e.pageY;
 								}
 								if (offset[0] === 1) {
-									w += deltaX;
+									w = e.pageX - x;
 								}
 								if (offset[1] === 1) {
-									h += deltaY;
+									h = e.pageY - y;
 								}
-								if (x <= maxX) $scope.bbox.x = x;
-								if (y <= maxY) $scope.bbox.y = y;
-								$scope.bbox.width = w;
-								$scope.bbox.height = h;
 							}
-							$scope.lastCoord.x = e.screenX;
-							$scope.lastCoord.y = e.screenY;
+							$scope.bbox.x = x;
+							$scope.bbox.width = w;
+							$scope.bbox.y = y;
+							$scope.bbox.height = h;
 						});
 					}
 				};
