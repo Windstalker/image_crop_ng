@@ -12,8 +12,7 @@
 		return {
 			width: 640,
 			height: 480,
-			src: "http://lorempixel.com",
-			theme: "nature"
+			src: "http://lorempixel.com/640/480/nature"
 		};
 	});
 
@@ -125,21 +124,18 @@
 	app.controller('ImgEditorCtrl', function ($scope, ImgData, BoundBoxData) {
 		$scope.imgData = ImgData;
 		$scope.bbox = BoundBoxData;
+		$scope.imgEl = new Image();
 
-		$scope.getImgSrc = function (imgData) {
-			var parts = [
-				imgData.src,
-				imgData.width,
-				imgData.height,
-				imgData.theme
-			];
-
-			return parts.join('/')
-		}
+		$scope.$watchCollection('imgData',
+			function () {
+				console.log('img changes!');
+				// TODO: canvas updating on img change
+			}
+		);
 	});
 
 	app.controller('ImgLoaderCtrl', function ($scope, ImgData) {
-		$scope.model = ImgData;
+		$scope.imgData = ImgData;
 	});
 
 	app.controller('BoundBoxCtrl', function ($scope, BoundBoxData) {

@@ -16,7 +16,8 @@
 </head>
 <body>
 <div class="img-editor-box" ng-controller="ImgEditorCtrl">
-	<img ng-src="{{ getImgSrc(imgData) }} " alt="Random Pic" width="{{ imgData.width }}" height="{{ imgData.height }}"/>
+	<img ng-src="{{ imgData.src }} " alt="Random Pic" width="{{ imgData.width }}" height="{{ imgData.height }}"/>
+	<canvas id="editor_canvas">Canvas is not supported on your device</canvas>
 	<autocrop></autocrop>
 </div>
 <div class="controls-box top left" ng-controller="ImgLoaderCtrl">
@@ -25,11 +26,23 @@
 			<label for="img_src">Image URL</label>
 		</div>
 		<div class="input-wrapper block row">
-			<input type="text" id="img_src" value="http://lorempixel.com/nature"/>
+			<input type="text" id="img_src" ng-model="imgData.src" ng-model-options="{ debounce: 1000 }" />
 		</div>
-		<div class="button-wrapper row block">
-			<button id="load">Load</button>
+		<div class="row">
+			<label for="img_w">Width</label>
+			<div class="input-wrapper">
+				<input type="text" id="img_w" ng-model="imgData.width" ng-model-options="{ debounce: 1000 }" />
+			</div>
 		</div>
+		<div class="row">
+			<label for="img_h">Height</label>
+			<div class="input-wrapper">
+				<input type="text" id="img_h" ng-model="imgData.height" ng-model-options="{ debounce: 1000 }" />
+			</div>
+		</div>
+		<!--<div class="button-wrapper row block">-->
+			<!--<button id="load">Load</button>-->
+		<!--</div>-->
 	</div>
 </div>
 <div class="controls-box top right" ng-controller="BoundBoxCtrl">
