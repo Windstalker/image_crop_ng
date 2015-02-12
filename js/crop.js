@@ -86,9 +86,9 @@
 								}
 							}
 							$scope.bbox.x = x;
-							$scope.bbox.width = w;
+							$scope.bbox.width = w > 0 ? w : 0;
 							$scope.bbox.y = y;
-							$scope.bbox.height = h;
+							$scope.bbox.height = h > 0 ? h : 0;
 						});
 					}
 				};
@@ -125,21 +125,42 @@
 			restrict: 'A',
 			controller: function ($scope, $element) {
 				console.log($element);
-				var cnv = $element.get(0);
-				$scope.ctx = cnv.getContext('2d');
+				$scope.cnv = $element.get(0);
+				$scope.ctx = $scope.cnv.getContext('2d');
 				$scope.imgEl = new Image();
 
 				$scope.imgEl.onload = function () {
-					$scope.drawImg(this);
+					$scope.drawCycle();
 				};
-				$scope.drawImg = function (img) {
-					console.log(img);
-					this.ctx.drawImage(img, 0, 0, cnv.width, cnv.height);
+				$scope.drawCycle = function () {
+					this.ctx.clearRect(0, 0, this.cnv.width, this.cnv.height);
+					this.drawCropArea();
+					this.drawImg();
 				};
-				$scope.drawCropArea = function (img) {
-					console.log(img);
-					this.ctx.fillRect(img, 0, 0, cnv.width, cnv.height);
+				$scope.drawImg = function () {
+					$scope.ctx.save();
+					$scope.ctx.globalCompositeOperation = "destination-over";
+					this.ctx.drawImage(this.imgEl, 0, 0, this.cnv.width, this.cnv.height);
+					$scope.ctx.restore();
 				};
+				$scope.drawCropArea = function () {
+					var coords = this.getCropAreaCoords();
+					this.ctx.save();
+					this.ctx.globalAlpha = 0.6;
+					this.ctx.fillStyle = '#33bb33';
+					this.ctx.fillRect(0, 0, this.cnv.width, this.cnv.height);
+					this.ctx.clearRect.apply(this.ctx, coords);
+					this.ctx.restore();
+				};
+				$scope.extractCropImg = function () {
+					var dataURI;
+				};
+				$scope.getCropAreaCoords = function () {
+					var offset = $element.offset(),
+						offsetX = offset.left,
+						offsetY = offset.top;
+					return [this.bbox.x - offsetX, this.bbox.y - offsetY, this.bbox.width, this.bbox.height];
+				}
 			},
 			link: function (scope, element) {
 				scope.$watchCollection('imgData', function (newData) {
@@ -147,8 +168,7 @@
 					$.extend(scope.imgEl, newData);
 				});
 				scope.$watchCollection('bbox', function (newData) {
-					console.log('bbox changes!');
-					// TODO: canvas updating on bbox change
+					scope.drawCycle();
 				});
 			}
 		}

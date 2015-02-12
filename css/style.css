@@ -87,7 +87,7 @@ body {
     width: 240px;
     height: 280px;
     border: 1px dashed yellow;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0);
 }
 [bb-point] {
     position: absolute;
