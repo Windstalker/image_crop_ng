@@ -16,6 +16,51 @@
 		};
 	});
 
+	app.factory('CanvasService', ['$window', function ($window) {
+		var offScreenCanvas = document.createElement('canvas'),
+			offScreenContext = offScreenCanvas.getContext('2d');
+		return {
+			$el: null,
+			el: null,
+			ctx: null,
+			offCnv: offScreenCanvas,
+			offCtx: offScreenContext,
+			getCropAreaCoords: function (bbox) {
+				var offset = this.$el.offset(),
+					offsetX = offset.left,
+					offsetY = offset.top;
+				return [bbox.x - offsetX, bbox.y - offsetY, bbox.width, bbox.height];
+			},
+			getOverlap: function (bbox) {
+				var offset = this.$el.offset();
+				var	w = this.el.width,
+					h = this.el.height,
+					left = bbox.x - offset.left,
+					right = w - left - bbox.width,
+					top = bbox.y - offset.top,
+					bottom = h - top - bbox.height;
+
+				var overX = Math.max(Math.min(left, w), 0);
+				var overY = Math.max(Math.min(top, h), 0);
+				var overW = w - Math.max(right, 0) - Math.max(left, 0);
+				var overH = h - Math.max(bottom, 0) - Math.max(top, 0);
+
+				overW = Math.max(overW, 0);
+				overH = Math.max(overH, 0);
+
+				return [overX, overY, overW, overH];
+			},
+			makeCrop: function (bbox) {
+				var coords = this.getOverlap(bbox);
+				var bmpData = this.ctx.getImageData.apply(this.ctx, coords);
+				this.offCnv.width = coords[2];
+				this.offCnv.height = coords[3];
+				this.offCtx.putImageData.apply(this.offCtx, [bmpData, 0, 0]);
+				$window.open(this.offCnv.toDataURL(), '_blank');
+			}
+		};
+	}]);
+
 	app.factory('BoundBoxData', function () {
 		return {
 			x: 150, y: 150,
@@ -123,10 +168,12 @@
 	app.directive('imgCanvas', function ($document) {
 		return {
 			restrict: 'A',
+			scope: true,
 			controller: function ($scope, $element) {
 				console.log($element);
-				$scope.cnv = $element.get(0);
-				$scope.ctx = $scope.cnv.getContext('2d');
+				$scope.cnvService.$el = $element;
+				$scope.cnvService.el = $scope.cnv = $element.get(0);
+				$scope.cnvService.ctx = $scope.ctx = $scope.cnv.getContext('2d');
 				$scope.imgEl = new Image();
 
 				$scope.imgEl.onload = function () {
@@ -138,13 +185,13 @@
 					this.drawImg();
 				};
 				$scope.drawImg = function () {
-					$scope.ctx.save();
-					$scope.ctx.globalCompositeOperation = "destination-over";
+					this.ctx.save();
+					this.ctx.globalCompositeOperation = "destination-over";
 					this.ctx.drawImage(this.imgEl, 0, 0, this.cnv.width, this.cnv.height);
-					$scope.ctx.restore();
+					this.ctx.restore();
 				};
 				$scope.drawCropArea = function () {
-					var coords = this.getCropAreaCoords();
+					var coords = this.cnvService.getCropAreaCoords(this.bbox);
 					this.ctx.save();
 					this.ctx.globalAlpha = 0.6;
 					this.ctx.fillStyle = '#33bb33';
@@ -152,20 +199,13 @@
 					this.ctx.clearRect.apply(this.ctx, coords);
 					this.ctx.restore();
 				};
-				$scope.extractCropImg = function () {
-					var dataURI;
-				};
-				$scope.getCropAreaCoords = function () {
-					var offset = $element.offset(),
-						offsetX = offset.left,
-						offsetY = offset.top;
-					return [this.bbox.x - offsetX, this.bbox.y - offsetY, this.bbox.width, this.bbox.height];
-				}
 			},
 			link: function (scope, element) {
 				scope.$watchCollection('imgData', function (newData) {
 					console.log('img changes!');
-					$.extend(scope.imgEl, newData);
+					scope.imgEl.src = newData.src + '?t=' + Date.now();
+					scope.imgEl.width = newData.width;
+					scope.imgEl.height = newData.height;
 				});
 				scope.$watchCollection('bbox', function (newData) {
 					scope.drawCycle();
@@ -174,17 +214,26 @@
 		}
 	});
 
-	app.controller('ImgEditorCtrl', function ($scope, ImgData, BoundBoxData) {
+	app.controller('ImgEditorCtrl', function ($scope, ImgData, BoundBoxData, CanvasService) {
 		$scope.imgData = ImgData;
 		$scope.bbox = BoundBoxData;
+		$scope.cnvService = CanvasService;
 	});
 
 	app.controller('ImgLoaderCtrl', function ($scope, ImgData) {
 		$scope.imgData = ImgData;
 	});
 
-	app.controller('BoundBoxCtrl', function ($scope, BoundBoxData) {
+	app.controller('BoundBoxCtrl', function ($scope, BoundBoxData, CanvasService) {
 		$scope.bbox = BoundBoxData;
+		$scope.cnvService = CanvasService;
+		$scope.boxOutBounds = function () {
+			var overlap = this.cnvService.getOverlap(this.bbox);
+			return !(overlap[2] && overlap[3]);
+		};
+		$scope.makeCrop = function () {
+			this.cnvService.makeCrop(this.bbox);
+		}
 	});
 })(window, document);
 

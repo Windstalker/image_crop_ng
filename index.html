@@ -69,6 +69,9 @@
 			<input type="number" id="height" ng-model="bbox.height" step="1"  min="1">
 		</div>
 	</div>
+	<div class="button-wrapper row block" ng-click="makeCrop()">
+		<button id="crop_area" ng-disabled="boxOutBounds()">Make crop!</button>
+	</div>
 </div>
 </body>
 </html>
