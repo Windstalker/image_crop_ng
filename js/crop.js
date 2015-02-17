@@ -61,12 +61,16 @@
 		};
 	}]);
 
-	app.factory('BoundBoxData', function () {
+	app.factory('BoundBoxData', ['$document', function ($document) {
+		var clientRect = $document.find('body').get(0).getBoundingClientRect();
+		var w = 200, h = 200;
+		var x = (clientRect.width / 2 - w / 2 + clientRect.left) >> 0;
+		var y = (clientRect.height / 2 - h / 2 + clientRect.top) >> 0;
 		return {
-			x: 150, y: 150,
-			width: 320, height: 240
+			x: x, y: y,
+			width: w, height: w
 		};
-	});
+	}]);
 
 	app.directive('autocrop', function () {
 		return {
@@ -165,7 +169,7 @@
 		}
 	});
 
-	app.directive('imgCanvas', function ($document) {
+	app.directive('imgCanvas', ['$window', function ($window) {
 		return {
 			restrict: 'A',
 			scope: true,
@@ -210,9 +214,12 @@
 				scope.$watchCollection('bbox', function (newData) {
 					scope.drawCycle();
 				});
+				$($window).on('resize', function () {
+					scope.drawCycle();
+				});
 			}
 		}
-	});
+	}]);
 
 	app.controller('ImgEditorCtrl', function ($scope, ImgData, BoundBoxData, CanvasService) {
 		$scope.imgData = ImgData;
@@ -224,7 +231,7 @@
 		$scope.imgData = ImgData;
 	});
 
-	app.controller('BoundBoxCtrl', function ($scope, BoundBoxData, CanvasService) {
+	app.controller('BoundBoxCtrl', function ($scope, $document, BoundBoxData, CanvasService) {
 		$scope.bbox = BoundBoxData;
 		$scope.cnvService = CanvasService;
 		$scope.boxOutBounds = function () {
